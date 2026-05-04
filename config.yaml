@@ -1,0 +1,55 @@
+models:
+  fast_model: "llama-3.1-8b-instant"
+  quality_model: "llama-3.3-70b-versatile"
+
+retrieval:
+  # PATHS (Using single quotes to avoid backslash escape errors)
+  data_path: 'C:\Users\gaurav.gupta7\Desktop\DATA'
+  vector_db_path: 'C:\Users\gaurav.gupta7\Desktop\CHROMA_DB'
+
+  # MASTER/SNIPER LIMITS (For the AgentState pipeline)
+  top_k_master: 100
+  top_k_sniper: 15
+
+  # SMART RETRIEVAL SETTINGS (For eval_retrieval.py)
+  fetch_k: 100          # The initial wide-net pool for diversity
+  lambda_mult: 0.5      # 0.5 = Balanced, 0.1 = Maximum Diversity
+  rerank_model: 'ms-marco-MiniLM-L-12-v2'
+  k_final: 15           # The final number of chunks sent to the Judge/LLM
+
+processing:
+  batch_size: 5
+  sleep_time: 30
+
+telemetry:
+  project_name: "QA_Oracle_Project"
+  endpoint: "https://api.smith.langchain.com"
+
+# Add these sections to your existing config.yaml
+indexing:
+  chunk_size: 1000
+  chunk_overlap: 100
+  embedding_model: "nomic-embed-text"
+
+reranking:
+  enabled: true
+  model_name: "ms-marco-MiniLM-L-12-v2" # Flashrank model
+  top_n: 25
+
+storage:
+  collection_name: "security_research"
+
+evaluation:
+  eval_model: "llama-3.3-70b-versatile"
+  # SOURCE: The ground truth you are testing against
+  golden_dataset_path: "C:/Users/gaurav.gupta7/Desktop/GoldenDatasets.xls"
+  # OUTPUT: Where the results of the audit are saved
+  quality_report_path: "final_quality_report.csv"
+  metrics:
+    faithfulness_threshold: 0.8
+  # The dataset containing Questions and the Expected Source/Page
+  retrieval_golden_set: 'C:\Users\gaurav.gupta7\Desktop\GoldenDatasets.xls'
+  # Where to save the "Hit Rate" report
+  retrieval_report_path: "retrieval_quality_report.csv"
+  # How many chunks to check for a "Hit"
+  top_k_eval: 10
